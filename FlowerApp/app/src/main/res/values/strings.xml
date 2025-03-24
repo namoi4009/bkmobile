@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Flower App</string>
+    <string name="app_name">Flower Snap</string>
+    <string name="app_description">Capture moments, blossom with stickers</string>
 </resources>
