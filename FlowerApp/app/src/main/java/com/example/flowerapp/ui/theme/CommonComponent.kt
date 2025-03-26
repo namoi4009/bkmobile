@@ -1,0 +1,111 @@
+package com.example.flowerapp.ui.theme
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material3.Text
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+
+@Composable
+fun CustomImage(imageId: Int, size: Dp? = null) {
+    Image(
+        painterResource(id = imageId),
+        contentDescription = "logo",
+        modifier = size?.let { Modifier.size(it) } ?: Modifier
+    )
+}
+
+@Composable
+fun CustomScaffold(
+    bottomBarText: String, // Text for bottom bar
+    showBackButton: Boolean = false, // Flag to show back button
+    onBackPressed: () -> Unit = {}, // Back button action
+    content: @Composable (PaddingValues) -> Unit // Content after innerPadding
+) {
+    Scaffold(
+        bottomBar = {
+            BottomAppBar(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+            ) {
+                if (showBackButton) {
+                    IconButton(onClick = { onBackPressed() }) {
+                        Icon(Icons.Default.PlayArrow, contentDescription = "Back", modifier = Modifier.graphicsLayer(scaleX = -1f))
+                    }
+                }
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f), // Centers the text
+                    textAlign = TextAlign.Center,
+                    text = bottomBarText,
+                    style = MaterialTheme.typography.headlineLarge,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
+    ) { innerPadding ->
+        content(innerPadding) // Pass the padding to content
+    }
+}
+
+@Composable
+fun MenuCard(
+    imageId: Int,
+    text: String,
+    onClick: () -> Unit
+) {
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    val imageWidth = (screenWidth * 2) / 3
+    Column (
+        modifier = Modifier
+            .clickable { onClick() },
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        CustomImage(imageId = imageId, size = imageWidth)
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.secondary)
+                .width(imageWidth)
+                .padding(10.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = text,
+                color = MaterialTheme.colorScheme.onSecondary,
+                style = MaterialTheme.typography.headlineLarge
+            )
+        }
+    }
+}
+
+
+@Composable
+fun CommonVSpace(heightValue: Dp = 30.dp) {
+    Spacer(modifier = Modifier.height(heightValue))
+}

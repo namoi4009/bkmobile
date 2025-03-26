@@ -3,12 +3,16 @@ package com.example.flowerapp.ui.theme
 import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
@@ -18,9 +22,17 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = pink_400,
+    secondary = green_500,
+    tertiary = pink_600,
+    background = pink_200,
+    surface = green_200,
+    onPrimary = pink_600,
+    onSecondary = Color.White,
+    onTertiary = Color.White,
+    onBackground = dark_text,
+    onSurface = green_700,
+    onSecondaryContainer = green_600
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -34,10 +46,33 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
+fun customTextFieldColors(): TextFieldColors {
+    return TextFieldDefaults.colors(
+        cursorColor = LightColorScheme.onSurface,
+        selectionColors = TextSelectionColors(
+            handleColor = LightColorScheme.tertiary,
+            backgroundColor = LightColorScheme.tertiary
+        ),
+
+        unfocusedIndicatorColor = Color.Transparent,
+        focusedIndicatorColor = LightColorScheme.onSurface,
+        disabledIndicatorColor = Color.Transparent,
+
+        focusedLeadingIconColor = LightColorScheme.secondary,
+        unfocusedLeadingIconColor = LightColorScheme.secondary,
+        focusedTrailingIconColor = LightColorScheme.secondary,
+        unfocusedTrailingIconColor = LightColorScheme.secondary,
+
+        focusedContainerColor = LightColorScheme.surface,
+        unfocusedContainerColor = LightColorScheme.surface,
+    )
+}
+
+@Composable
 fun FlowerAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

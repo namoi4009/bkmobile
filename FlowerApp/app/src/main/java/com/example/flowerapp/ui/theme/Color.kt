@@ -20,3 +20,5 @@ val green_300 = Color(0xFFC1F4C5)
 val green_500 = Color(0xFF43C77B)
 val green_600 = Color(0xFF1EB760)
 val green_700 = Color(0xFF006722)
+
+val dark_text = Color(0xFF323232)
