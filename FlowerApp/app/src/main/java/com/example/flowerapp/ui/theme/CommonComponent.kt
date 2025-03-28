@@ -7,29 +7,39 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Text
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun CustomImage(imageId: Int, size: Dp? = null) {
@@ -70,7 +80,11 @@ fun CustomScaffold(
             }
         }
     ) { innerPadding ->
-        content(innerPadding) // Pass the padding to content
+        Box(
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            content(innerPadding)
+        }
     }
 }
 
@@ -87,12 +101,16 @@ fun MenuCard(
             .clickable { onClick() },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CustomImage(imageId = imageId, size = imageWidth)
+        CustomImage(
+            imageId = imageId,
+            size = imageWidth
+        )
         Box(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.secondary)
                 .width(imageWidth)
-                .padding(10.dp),
+//                .padding(10.dp)
+            ,
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -104,6 +122,62 @@ fun MenuCard(
     }
 }
 
+@Composable
+fun ButtonWithIcon(
+    onClick: () -> Unit = {},
+    iconId: Int,
+    textId: Int? = null,
+    primaryButton: Boolean = true
+) {
+    Button(
+        onClick = onClick,
+        modifier = Modifier.padding(20.dp),
+        contentPadding = PaddingValues(horizontal = 36.dp, vertical = 16.dp),
+        colors = buttonColors(
+            containerColor = if(primaryButton) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary,
+            contentColor = if(primaryButton) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSecondary
+        )
+    ) {
+        Icon(
+            painter = painterResource(iconId),
+            contentDescription = ""
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        if (textId != null) {
+            Text(
+                text = stringResource(id = textId),
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp
+            )
+        }
+    }
+}
+
+@Composable
+fun CustomIconButton(
+    onClick: () -> Unit,
+    primaryButton: Boolean = true,
+    largeButton: Boolean = true,
+    iconId: Int,
+) {
+    IconButton(
+        onClick = onClick,
+        modifier = Modifier
+            .size(if(largeButton) 150.dp else 125.dp)
+            .padding(25.dp)
+            .clip(CircleShape),
+        colors = IconButtonDefaults.iconButtonColors(
+            containerColor = if(primaryButton) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary,
+            contentColor = if(primaryButton) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSecondary
+        )
+    ) {
+        Icon(
+            painterResource(iconId),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(0.7f)
+        )
+    }
+}
 
 @Composable
 fun CommonVSpace(heightValue: Dp = 30.dp) {

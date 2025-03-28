@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.flowerapp.R
+import com.example.flowerapp.ui.theme.ButtonWithIcon
 import com.example.flowerapp.ui.theme.CustomImage
 
 @Composable
@@ -58,22 +59,10 @@ private fun NoPermissionScreenBody(
                 color = MaterialTheme.colorScheme.onSurface
             )
         }
-
-        Button(
+        ButtonWithIcon(
             onClick = onRequestPermission,
-            modifier = Modifier.padding(20.dp),
-            contentPadding = PaddingValues(horizontal = 36.dp, vertical = 16.dp),
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.photo_camera),
-                contentDescription = "camera"
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = stringResource(id = R.string.grant_permission),
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
-            )
-        }
+            iconId = R.drawable.photo_camera,
+            textId = R.string.grant_permission,
+        )
     }
 }
