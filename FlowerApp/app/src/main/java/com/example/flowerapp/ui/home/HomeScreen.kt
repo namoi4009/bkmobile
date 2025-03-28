@@ -22,14 +22,14 @@ import com.example.flowerapp.R
 import com.example.flowerapp.ui.theme.CommonVSpace
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(openCameraScreen: () -> Unit) {
     CustomScaffold(bottomBarText = "Home") {
-        innerPadding -> HomeComponent(innerPadding)
+        innerPadding -> HomeComponent(innerPadding, openCameraScreen)
     }
 }
 
 @Composable
-fun HomeComponent(innerPadding: PaddingValues) {
+fun HomeComponent(innerPadding: PaddingValues, openCameraScreen: () -> Unit) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -48,7 +48,9 @@ fun HomeComponent(innerPadding: PaddingValues) {
             MenuCard(
                 imageId = R.drawable.ic_launcher_background,
                 text = stringResource(id = R.string.capture_picture),
-                onClick = {}
+                onClick = {
+                    openCameraScreen()
+                }
             )
         }
     }

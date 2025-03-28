@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.flowerapp.ui.camera.CameraScreen
 import com.example.flowerapp.ui.home.HomeScreen
 import com.example.flowerapp.ui.login.LoginScreen
 import com.example.flowerapp.ui.theme.FlowerAppTheme
@@ -44,7 +45,7 @@ fun MainApp() {
                 .background(MaterialTheme.colorScheme.background)
                 .fillMaxSize()
         ) {
-            NavHost(navController = navController, startDestination = "home") {
+            NavHost(navController = navController, startDestination = "camera") {
 
                 // route: login
                 composable("login") {
@@ -55,7 +56,14 @@ fun MainApp() {
 
                 // route: home
                 composable("home") {
-                    HomeScreen()
+                    HomeScreen(openCameraScreen = {
+                        navController.navigate("camera")
+                    })
+                }
+
+                // route: camera
+                composable("camera") {
+                    CameraScreen()
                 }
 
             }
