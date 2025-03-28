@@ -45,7 +45,7 @@ fun MainApp() {
                 .background(MaterialTheme.colorScheme.background)
                 .fillMaxSize()
         ) {
-            NavHost(navController = navController, startDestination = "login") {
+            NavHost(navController = navController, startDestination = "camera") {
 
                 // route: login
                 composable("login") {

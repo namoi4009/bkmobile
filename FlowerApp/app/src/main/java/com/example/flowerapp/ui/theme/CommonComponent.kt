@@ -163,12 +163,12 @@ fun CustomIconButton(
     IconButton(
         onClick = onClick,
         modifier = Modifier
-            .size(if(largeButton) 150.dp else 125.dp)
+            .size(if(largeButton) 125.dp else 100.dp)
             .padding(25.dp)
             .clip(CircleShape),
         colors = IconButtonDefaults.iconButtonColors(
             containerColor = if(primaryButton) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary,
-            contentColor = if(primaryButton) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSecondary
+            contentColor = if(primaryButton) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary
         )
     ) {
         Icon(
