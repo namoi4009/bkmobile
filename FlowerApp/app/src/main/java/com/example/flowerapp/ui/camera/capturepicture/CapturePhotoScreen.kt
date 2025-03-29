@@ -111,6 +111,7 @@ private fun CameraContent(
                         capturePhoto(context, cameraController) { bitmap ->
                             onPhotoCaptured(bitmap)
                             showLastPhotoPreview = true
+                            isFlashing = true
                         }
                     },
                     shape = CircleShape,
