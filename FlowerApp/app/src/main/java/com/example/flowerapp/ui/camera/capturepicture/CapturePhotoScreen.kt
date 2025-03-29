@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.ImageProxy
@@ -91,29 +92,58 @@ private fun CameraContent(
     // State to control the visibility of the last photo preview
     var showLastPhotoPreview by remember { mutableStateOf(lastCapturedPhoto != null) }
 
+    var isFrontCamera by remember { mutableStateOf(false) }
+    fun toggleCamera() {
+        isFrontCamera = !isFrontCamera
+        cameraController.cameraSelector = if (isFrontCamera) {
+            CameraSelector.DEFAULT_FRONT_CAMERA
+        } else {
+            CameraSelector.DEFAULT_BACK_CAMERA
+        }
+    }
+
     Scaffold (
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    // Trigger flash animation
-                    isFlashing = true
+            Box(contentAlignment = Alignment.BottomCenter, modifier = Modifier.fillMaxSize()) {
+                // Capture Button
+                FloatingActionButton(
+                    onClick = {
+                        capturePhoto(context, cameraController) { bitmap ->
+                            onPhotoCaptured(bitmap)
+                            showLastPhotoPreview = true
+                        }
+                    },
+                    shape = CircleShape,
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier
+                        .size(80.dp)
+                        .align(Alignment.BottomCenter)
+                ) {
+                    Icon(
+                        painterResource(R.drawable.camera),
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize(0.7f)
+                    )
+                }
 
-                    // Capture photo
-                    capturePhoto(context, cameraController) { bitmap ->
-                        onPhotoCaptured(bitmap)
-                        showLastPhotoPreview = true
-                    }
-                },
-                shape = CircleShape,
-                containerColor = MaterialTheme.colorScheme.onSecondary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier.size(80.dp)
-            ) {
-                Icon(
-                    painterResource(R.drawable.filter_vintage),
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize(0.7f)
-                )
+                // Toggle Camera Button
+                FloatingActionButton(
+                    onClick = { toggleCamera() },
+                    shape = CircleShape,
+                    containerColor = MaterialTheme.colorScheme.onSecondary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier
+                        .padding(end = 24.dp)
+                        .size(60.dp)
+                        .align(Alignment.BottomEnd)
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.flip_camera_android),
+                        contentDescription = "Switch Camera",
+                        modifier = Modifier.fillMaxSize(0.7f)
+                    )
+                }
             }
         },
         floatingActionButtonPosition = FabPosition.Center
