@@ -60,6 +60,7 @@ private fun NoPermissionScreenBody(
             )
         }
         ButtonWithIcon(
+            modifier = Modifier.padding(20.dp),
             onClick = onRequestPermission,
             iconId = R.drawable.photo_camera,
             textId = R.string.grant_permission,

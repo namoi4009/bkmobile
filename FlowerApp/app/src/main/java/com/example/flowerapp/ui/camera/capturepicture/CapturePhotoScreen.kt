@@ -50,7 +50,6 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
@@ -58,6 +57,9 @@ import org.koin.androidx.compose.koinViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.flowerapp.R
+import com.example.flowerapp.ui.theme.CustomFloatingActionButton
+import com.example.flowerapp.ui.theme.CustomLazyColumn
+import com.example.flowerapp.ui.theme.ToggleLazyColumnScreen
 import kotlinx.coroutines.delay
 import java.util.concurrent.Executor
 
@@ -106,7 +108,7 @@ private fun CameraContent(
         floatingActionButton = {
             Box(contentAlignment = Alignment.BottomCenter, modifier = Modifier.fillMaxSize()) {
                 // Capture Button
-                FloatingActionButton(
+                CustomFloatingActionButton(
                     onClick = {
                         capturePhoto(context, cameraController) { bitmap ->
                             onPhotoCaptured(bitmap)
@@ -114,37 +116,24 @@ private fun CameraContent(
                             isFlashing = true
                         }
                     },
-                    shape = CircleShape,
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    iconId = R.drawable.camera,
                     modifier = Modifier
                         .size(80.dp)
                         .align(Alignment.BottomCenter)
-                ) {
-                    Icon(
-                        painterResource(R.drawable.camera),
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxSize(0.7f)
-                    )
-                }
+                )
 
                 // Toggle Camera Button
-                FloatingActionButton(
-                    onClick = { toggleCamera() },
-                    shape = CircleShape,
-                    containerColor = MaterialTheme.colorScheme.onSecondary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                CustomFloatingActionButton(
+                    onClick = {
+                        toggleCamera()
+                    },
+                    primaryButton = false,
+                    iconId = R.drawable.flip_camera_android,
                     modifier = Modifier
                         .padding(end = 24.dp)
                         .size(60.dp)
                         .align(Alignment.BottomEnd)
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.flip_camera_android),
-                        contentDescription = "Switch Camera",
-                        modifier = Modifier.fillMaxSize(0.7f)
-                    )
-                }
+                )
             }
         },
         floatingActionButtonPosition = FabPosition.Center
@@ -187,6 +176,9 @@ private fun CameraContent(
                     }
                 )
             }
+
+            // lazy column
+            ToggleLazyColumnScreen()
         }
     }
 }
@@ -231,7 +223,6 @@ private fun LastPhotoPreview(
     onDismiss: () -> Unit,
     onViewFullPhoto: () -> Unit
 ) {
-    // Create a Box that covers the entire screen to detect taps outside the image
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -277,11 +268,10 @@ private fun LastPhotoPreview(
 fun FlashEffect(isVisible: Boolean) {
     var showFlash by remember { mutableStateOf(isVisible) }
 
-    // When isVisible becomes true, we show the flash and then hide it after a delay
     LaunchedEffect(isVisible) {
         if (isVisible) {
             showFlash = true
-            delay(150) // Flash duration
+            delay(150)
             showFlash = false
         }
     }

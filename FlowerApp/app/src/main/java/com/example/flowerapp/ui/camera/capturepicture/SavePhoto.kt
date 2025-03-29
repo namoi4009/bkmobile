@@ -38,7 +38,7 @@ class SavePhoto(
                 put(MediaStore.Images.Media.DATE_ADDED, nowTimestamp)
                 put(MediaStore.Images.Media.DATE_MODIFIED, nowTimestamp)
                 put(MediaStore.Images.Media.AUTHOR, "FlowerApp")
-                put(MediaStore.Images.Media.DESCRIPTION, "Pictur by FlowerApp")
+                put(MediaStore.Images.Media.DESCRIPTION, "Picture by FlowerApp")
             }
         }
         val imageMediaStoreUri: Uri? = resolver.insert(imageCollection, imageContentValues)
