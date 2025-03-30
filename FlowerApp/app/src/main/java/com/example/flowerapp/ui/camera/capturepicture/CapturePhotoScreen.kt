@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Matrix
+import android.graphics.Paint
 import android.graphics.RectF
 import android.net.Uri
 import android.util.Log
@@ -244,34 +245,43 @@ private fun mergeStickersOnBitmap(
     stickers: List<Sticker>,
     previewView: PreviewView?
 ): Bitmap {
-    val resultBitmap = cameraBitmap.copy(cameraBitmap.config ?: Bitmap.Config.ARGB_8888, true)
+    // Use a mutable copy of the original camera image
+    val resultBitmap = cameraBitmap.copy(Bitmap.Config.ARGB_8888, true)
     val canvas = Canvas(resultBitmap)
 
     previewView?.let { preview ->
         val previewWidth = preview.width.toFloat()
         val previewHeight = preview.height.toFloat()
-
         val cameraWidth = cameraBitmap.width.toFloat()
         val cameraHeight = cameraBitmap.height.toFloat()
 
-        // Compute scale factor between PreviewView and actual camera output
+        // Compute scale factors to transform preview coordinates to camera bitmap coordinates
         val scaleX = cameraWidth / previewWidth
         val scaleY = cameraHeight / previewHeight
+
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
         stickers.forEach { sticker ->
             val stickerBitmap = BitmapFactory.decodeResource(context.resources, sticker.imageId)
 
-            // Convert sticker scale from PreviewView to Camera Bitmap
-            val scaledWidth = (stickerBitmap.width * sticker.scale * scaleX).toInt()
-            val scaledHeight = (stickerBitmap.height * sticker.scale * scaleY).toInt()
-            val scaledSticker = Bitmap.createScaledBitmap(stickerBitmap, scaledWidth, scaledHeight, true)
+            // Downscale sticker if it's too large to prevent memory issues
+            val maxSize = 300  // Set a reasonable max size (adjust as needed)
+            val ratio = maxSize.toFloat() / maxOf(stickerBitmap.width, stickerBitmap.height)
+            val safeScale = if (ratio < 1) ratio else 1f
 
-            // Adjust sticker position from preview to camera coordinates
-            val stickerX = sticker.x * scaleX - (scaledWidth / 2)
-            val stickerY = sticker.y * scaleY - (scaledHeight / 2)
+            val stickerWidth = (stickerBitmap.width * sticker.scale * scaleX * safeScale).toInt()
+            val stickerHeight = (stickerBitmap.height * sticker.scale * scaleY * safeScale).toInt()
 
-            // Draw the sticker on the transformed position
-            canvas.drawBitmap(scaledSticker, stickerX, stickerY, null)
+            val scaledSticker = Bitmap.createScaledBitmap(stickerBitmap, stickerWidth, stickerHeight, true)
+
+            val stickerX = sticker.x * scaleX - (scaledSticker.width / 2)
+            val stickerY = sticker.y * scaleY - (scaledSticker.height / 2)
+
+            // Draw scaled sticker at the correct position
+            canvas.drawBitmap(scaledSticker, stickerX, stickerY, paint)
+
+            // Recycle bitmap to free memory
+            stickerBitmap.recycle()
         }
     }
 
