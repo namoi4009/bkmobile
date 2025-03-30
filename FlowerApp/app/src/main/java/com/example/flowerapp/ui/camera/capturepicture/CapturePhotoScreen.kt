@@ -44,6 +44,7 @@ import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -93,7 +94,7 @@ private fun CameraContent(
         LifecycleCameraController(context)
     }
 
-    var selectedStickers by remember { mutableStateOf(mutableListOf<Sticker>()) }
+    var selectedStickers = remember { mutableStateListOf<Sticker>() }
 
     // State to control the flash effect
     var isFlashing by remember { mutableStateOf(false) }
@@ -166,7 +167,7 @@ private fun CameraContent(
             StickerCanvas(stickers = selectedStickers, modifier = Modifier.fillMaxSize())
 
             ToggleLazyColumnScreen { sticker ->
-                selectedStickers = selectedStickers.toMutableList().apply { add(sticker) }
+                selectedStickers.add(sticker.copy())
 
             }
 
@@ -283,7 +284,6 @@ private fun mergeStickersOnBitmap(
 
     return resultBitmap
 }
-
 
 @Composable
 private fun LastPhotoPreview(

@@ -12,8 +12,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -64,63 +69,66 @@ fun StickerCanvas(
     modifier: Modifier = Modifier
 ) {
     val density = LocalDensity.current
-    val screenSize = LocalConfiguration.current.screenWidthDp to LocalConfiguration.current.screenHeightDp
+    val screenSize = LocalConfiguration.current
+
+    val screenWidthPx = with(density) { screenSize.screenWidthDp.dp.toPx() }
+    val screenHeightPx = with(density) { screenSize.screenHeightDp.dp.toPx() }
 
     Box(modifier = modifier.fillMaxSize()) {
         stickers.forEach { sticker ->
             if (sticker.x == 0f && sticker.y == 0f) {
-                sticker.x = with(density) { (screenSize.first.dp.toPx() / 2) - 50 }
-                sticker.y = with(density) { (screenSize.second.dp.toPx() / 2) - 50 }
+                sticker.x = screenWidthPx / 2 - 50 // Center horizontally
+                sticker.y = screenHeightPx / 2 - 50 // Center vertically
             }
 
             var position by remember { mutableStateOf(Offset(sticker.x, sticker.y)) }
             var scale by remember { mutableFloatStateOf(sticker.scale) }
-            var isResizing by remember { mutableStateOf(false) }
 
             Box(
                 modifier = Modifier
                     .offset { IntOffset(position.x.toInt(), position.y.toInt()) }
                     .pointerInput(Unit) {
-                        detectTransformGestures { _, pan, _, _ ->
-                            if (!isResizing) {
-                                position = Offset(position.x + pan.x, position.y + pan.y)
-                            }
+                        detectTransformGestures { _, pan, zoom, _ ->
+                            position = Offset(position.x + pan.x, position.y + pan.y) // ✅ Allow movement
+                            scale = (scale * zoom).coerceIn(0.5f, 3f) // ✅ Scale properly
                         }
                     }
             ) {
                 Box {
+                    // Sticker Image
                     Image(
                         painter = painterResource(id = sticker.imageId),
                         contentDescription = sticker.name,
                         modifier = Modifier.size((100 * scale).dp)
                     )
 
-                    // Delete Button (Top-left)
-                    Button(
+                    // Delete Button (always at the top-left of the sticker)
+                    IconButton(
                         onClick = { stickers.remove(sticker) },
                         modifier = Modifier
-                            .offset((-20).dp, (-20).dp)
-                            .size(24.dp)
+                            .offset((-16).dp, (-16).dp) // Keeps button at top-left
+                            .size(32.dp) // Small size for better appearance
+                            .background(Color.Red, shape = CircleShape) // Ensure button shape
                     ) {
-                        Text("X")
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Delete",
+                            tint = Color.White
+                        )
                     }
 
-                    // Resize Handle (Bottom-right)
-                    Box(
+                    // Scale Button (for manual scaling)
+                    IconButton(
+                        onClick = { scale = (scale * 1.1f).coerceIn(0.5f, 3f) },
                         modifier = Modifier
-                            .offset((90 * scale).dp, (90 * scale).dp)
-                            .size(24.dp)
-                            .pointerInput(Unit) {
-                                detectTransformGestures { _, pan, _, _ ->
-                                    isResizing = true
-                                    scale = (scale + pan.x * 0.01f).coerceIn(0.5f, 3f)
-                                }
-                            }
+                            .offset((90 * scale).dp, (90 * scale).dp) // Bottom-right
+                            .size(32.dp) // Small size for better appearance
+                            .background(MaterialTheme.colorScheme.secondary, shape = CircleShape) // Ensure button shape
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .size(24.dp)
-                                .background(Color.Gray, shape = CircleShape)
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "Scale",
+                            tint = Color.White
                         )
                     }
                 }
