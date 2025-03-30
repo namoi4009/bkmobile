@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Matrix
+import android.graphics.RectF
 import android.net.Uri
 import android.util.Log
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -18,6 +19,7 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.ImageProxy
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
+import androidx.camera.view.TransformExperimental
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
@@ -224,7 +226,7 @@ private fun capturePhoto(
                 val previewHeight = previewView?.height ?: cameraBitmap.height
 
                 val finalBitmap = mergeStickersOnBitmap(
-                    context, cameraBitmap, stickers, previewWidth, previewHeight)
+                    context, cameraBitmap, stickers, previewView)
 
                 onPhotoCaptured(finalBitmap)
                 image.close()
@@ -240,44 +242,41 @@ private fun mergeStickersOnBitmap(
     context: Context,
     cameraBitmap: Bitmap,
     stickers: List<Sticker>,
-    screenWidth: Int,
-    screenHeight: Int
+    previewView: PreviewView?
 ): Bitmap {
-    val resultBitmap = createBitmap(
-        cameraBitmap.width,
-        cameraBitmap.height,
-        cameraBitmap.config ?: Bitmap.Config.ARGB_8888
-    )
-
+    val resultBitmap = cameraBitmap.copy(cameraBitmap.config ?: Bitmap.Config.ARGB_8888, true)
     val canvas = Canvas(resultBitmap)
 
-    // Draw Camera Image as Background
-    canvas.drawBitmap(cameraBitmap, 0f, 0f, null)
+    previewView?.let { preview ->
+        val previewWidth = preview.width.toFloat()
+        val previewHeight = preview.height.toFloat()
 
-    // Get scale ratios between screen and camera bitmap
-    val scaleX = cameraBitmap.width.toFloat() / screenWidth
-    val scaleY = cameraBitmap.height.toFloat() / screenHeight
+        val cameraWidth = cameraBitmap.width.toFloat()
+        val cameraHeight = cameraBitmap.height.toFloat()
 
-    // Draw Stickers on Top
-    stickers.forEach { sticker ->
-        val stickerBitmap = BitmapFactory.decodeResource(context.resources, sticker.imageId)
+        // Compute scale factor between PreviewView and actual camera output
+        val scaleX = cameraWidth / previewWidth
+        val scaleY = cameraHeight / previewHeight
 
-        // Convert sticker size from screen scale to bitmap scale
-        val scaledWidth = (stickerBitmap.width * sticker.scale * scaleX).toInt()
-        val scaledHeight = (stickerBitmap.height * sticker.scale * scaleY).toInt()
-        val scaledSticker = stickerBitmap.scale(scaledWidth, scaledHeight)
+        stickers.forEach { sticker ->
+            val stickerBitmap = BitmapFactory.decodeResource(context.resources, sticker.imageId)
 
-        // Convert sticker position from screen coordinates to bitmap coordinates
-        val stickerX = sticker.x * scaleX
-        val stickerY = sticker.y * scaleY
+            // Convert sticker scale from PreviewView to Camera Bitmap
+            val scaledWidth = (stickerBitmap.width * sticker.scale * scaleX).toInt()
+            val scaledHeight = (stickerBitmap.height * sticker.scale * scaleY).toInt()
+            val scaledSticker = Bitmap.createScaledBitmap(stickerBitmap, scaledWidth, scaledHeight, true)
 
-        // Draw sticker on the camera bitmap
-        canvas.drawBitmap(scaledSticker, stickerX, stickerY, null)
+            // Adjust sticker position from preview to camera coordinates
+            val stickerX = sticker.x * scaleX - (scaledWidth / 2)
+            val stickerY = sticker.y * scaleY - (scaledHeight / 2)
+
+            // Draw the sticker on the transformed position
+            canvas.drawBitmap(scaledSticker, stickerX, stickerY, null)
+        }
     }
 
     return resultBitmap
 }
-
 
 @Composable
 private fun LastPhotoPreview(
