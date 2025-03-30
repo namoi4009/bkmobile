@@ -3,9 +3,11 @@ package com.example.flowerapp.ui.theme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -60,20 +62,35 @@ fun CustomScaffold(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
             ) {
-                if (showBackButton) {
-                    IconButton(onClick = { onBackPressed() }) {
-                        Icon(Icons.Default.PlayArrow, contentDescription = "Back", modifier = Modifier.graphicsLayer(scaleX = -1f))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // Leftmost Back Button
+                    if (showBackButton) {
+                        IconButton(onClick = { onBackPressed() }) {
+                            Icon(
+                                Icons.Default.PlayArrow,
+                                contentDescription = "Back",
+                                modifier = Modifier.graphicsLayer(scaleX = -1f)
+                            )
+                        }
+                    } else {
+                        Spacer(modifier = Modifier.width(48.dp)) // Maintain balance if no button
                     }
+
+                    // Centered Text
+                    Text(
+                        modifier = Modifier.weight(1f), // This makes it take the remaining space evenly
+                        textAlign = TextAlign.Center,
+                        text = bottomBarText,
+                        style = MaterialTheme.typography.headlineLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    // Equal Spacer on the Right
+                    Spacer(modifier = Modifier.width(48.dp)) // Balances the layout
                 }
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f), // Centers the text
-                    textAlign = TextAlign.Center,
-                    text = bottomBarText,
-                    style = MaterialTheme.typography.headlineLarge,
-                    fontWeight = FontWeight.Bold
-                )
             }
         }
     ) { innerPadding ->

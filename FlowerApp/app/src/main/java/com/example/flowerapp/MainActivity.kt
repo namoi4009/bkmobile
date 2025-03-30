@@ -39,13 +39,16 @@ class MainActivity : ComponentActivity() {
 fun MainApp() {
     val navController = rememberNavController()
     FlowerAppTheme {
+        fun navigateBack() {
+            navController.popBackStack()
+        }
         Column(
             modifier = Modifier
                 .windowInsetsPadding(WindowInsets.systemBars)
                 .background(MaterialTheme.colorScheme.background)
                 .fillMaxSize()
         ) {
-            NavHost(navController = navController, startDestination = "camera") {
+            NavHost(navController = navController, startDestination = "login") {
 
                 // route: login
                 composable("login") {
@@ -63,7 +66,7 @@ fun MainApp() {
 
                 // route: camera
                 composable("camera") {
-                    CameraScreen()
+                    CameraScreen { navigateBack() }
                 }
 
             }

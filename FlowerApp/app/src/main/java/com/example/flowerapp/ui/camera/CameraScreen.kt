@@ -15,9 +15,13 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 
 @Composable
-fun CameraScreen() {
+fun CameraScreen(
+    onBackPressed: () -> Unit
+) {
     CustomScaffold(
-        bottomBarText = stringResource(id = R.string.capture_picture)
+        bottomBarText = stringResource(id = R.string.capture_picture),
+        showBackButton = true,
+        onBackPressed = onBackPressed
     ) {
         CameraScreenBody()
     }
