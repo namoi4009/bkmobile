@@ -245,7 +245,6 @@ private fun mergeStickersOnBitmap(
     stickers: List<Sticker>,
     previewView: PreviewView?
 ): Bitmap {
-    // Use a mutable copy of the original camera image
     val resultBitmap = cameraBitmap.copy(Bitmap.Config.ARGB_8888, true)
     val canvas = Canvas(resultBitmap)
 
@@ -255,7 +254,9 @@ private fun mergeStickersOnBitmap(
         val cameraWidth = cameraBitmap.width.toFloat()
         val cameraHeight = cameraBitmap.height.toFloat()
 
-        // Compute scale factors to transform preview coordinates to camera bitmap coordinates
+        val density = context.resources.displayMetrics.density
+
+        // Compute aspect-ratio-aware scaling factors
         val scaleX = cameraWidth / previewWidth
         val scaleY = cameraHeight / previewHeight
 
@@ -264,29 +265,25 @@ private fun mergeStickersOnBitmap(
         stickers.forEach { sticker ->
             val stickerBitmap = BitmapFactory.decodeResource(context.resources, sticker.imageId)
 
-            // Downscale sticker if it's too large to prevent memory issues
-            val maxSize = 300  // Set a reasonable max size (adjust as needed)
-            val ratio = maxSize.toFloat() / maxOf(stickerBitmap.width, stickerBitmap.height)
-            val safeScale = if (ratio < 1) ratio else 1f
+            // Convert dp size to pixels correctly
+            val stickerSizePx = (100 * sticker.scale * density).toInt()
 
-            val stickerWidth = (stickerBitmap.width * sticker.scale * scaleX * safeScale).toInt()
-            val stickerHeight = (stickerBitmap.height * sticker.scale * scaleY * safeScale).toInt()
+            // Ensure the sticker maintains the correct scaling when placed
+            val scaledSticker = stickerBitmap.scale(stickerSizePx, stickerSizePx)
 
-            val scaledSticker = Bitmap.createScaledBitmap(stickerBitmap, stickerWidth, stickerHeight, true)
+            // Map sticker position correctly from preview space to camera space
+            val stickerX = (sticker.x * scaleX) - (stickerSizePx / 2)
+            val stickerY = (sticker.y * scaleY) - (stickerSizePx / 2)
 
-            val stickerX = sticker.x * scaleX - (scaledSticker.width / 2)
-            val stickerY = sticker.y * scaleY - (scaledSticker.height / 2)
-
-            // Draw scaled sticker at the correct position
             canvas.drawBitmap(scaledSticker, stickerX, stickerY, paint)
 
-            // Recycle bitmap to free memory
             stickerBitmap.recycle()
         }
     }
 
     return resultBitmap
 }
+
 
 @Composable
 private fun LastPhotoPreview(
