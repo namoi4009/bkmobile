@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
 import android.graphics.Matrix
 import android.net.Uri
 import android.util.Log
@@ -58,10 +60,10 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.flowerapp.R
 import com.example.flowerapp.ui.theme.CustomFloatingActionButton
-import com.example.flowerapp.ui.theme.CustomLazyColumn
-import com.example.flowerapp.ui.theme.ToggleLazyColumnScreen
 import kotlinx.coroutines.delay
 import java.util.concurrent.Executor
+import androidx.core.graphics.scale
+import androidx.core.graphics.createBitmap
 
 @Composable
 fun CapturePictureScreen(
@@ -88,6 +90,8 @@ private fun CameraContent(
         LifecycleCameraController(context)
     }
 
+    var selectedStickers by remember { mutableStateOf<List<Sticker>>(emptyList()) }
+
     // State to control the flash effect
     var isFlashing by remember { mutableStateOf(false) }
 
@@ -104,13 +108,15 @@ private fun CameraContent(
         }
     }
 
+    var previewView: PreviewView? by remember { mutableStateOf(null) }
+
     Scaffold (
         floatingActionButton = {
             Box(contentAlignment = Alignment.BottomCenter, modifier = Modifier.fillMaxSize()) {
                 // Capture Button
                 CustomFloatingActionButton(
                     onClick = {
-                        capturePhoto(context, cameraController) { bitmap ->
+                        capturePhoto(context, cameraController, selectedStickers, previewView) { bitmap ->
                             onPhotoCaptured(bitmap)
                             showLastPhotoPreview = true
                             isFlashing = true
@@ -141,15 +147,24 @@ private fun CameraContent(
         Box(
             modifier = Modifier.padding(innerPadding)
         ){
+
+
             AndroidView(factory = { context ->
                 PreviewView(context).apply {
                     layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
                     scaleType = PreviewView.ScaleType.FILL_START
-                }.also { previewView ->
-                    previewView.controller = cameraController
+                }.also { view ->
+                    previewView = view
+                    view.controller = cameraController
                     cameraController.bindToLifecycle(lifeCycleOwner)
                 }
             })
+
+            StickerCanvas(stickers = selectedStickers, modifier = Modifier.fillMaxSize())
+
+            ToggleLazyColumnScreen { sticker ->
+                selectedStickers = selectedStickers + sticker
+            }
 
             // Flash effect overlay
             FlashEffect(isVisible = isFlashing)
@@ -176,9 +191,6 @@ private fun CameraContent(
                     }
                 )
             }
-
-            // lazy column
-            ToggleLazyColumnScreen()
         }
     }
 }
@@ -186,6 +198,8 @@ private fun CameraContent(
 private fun capturePhoto(
     context: Context,
     cameraController: LifecycleCameraController,
+    stickers: List<Sticker>,
+    previewView: PreviewView?,
     onPhotoCaptured: (Bitmap) -> Unit
 ) {
     val mainExecutor: Executor = ContextCompat.getMainExecutor(context)
@@ -197,7 +211,7 @@ private fun capturePhoto(
                 val matrix = Matrix().apply {
                     postRotate(image.imageInfo.rotationDegrees.toFloat())
                 }
-                val correctedBitmap = Bitmap.createBitmap(
+                val cameraBitmap = Bitmap.createBitmap(
                     image.toBitmap(),
                     0,
                     0,
@@ -206,7 +220,13 @@ private fun capturePhoto(
                     matrix,
                     true
                 )
-                onPhotoCaptured(correctedBitmap)
+                val previewWidth = previewView?.width ?: cameraBitmap.width
+                val previewHeight = previewView?.height ?: cameraBitmap.height
+
+                val finalBitmap = mergeStickersOnBitmap(
+                    context, cameraBitmap, stickers, previewWidth, previewHeight)
+
+                onPhotoCaptured(finalBitmap)
                 image.close()
             }
 
@@ -215,6 +235,49 @@ private fun capturePhoto(
             }
         })
 }
+
+private fun mergeStickersOnBitmap(
+    context: Context,
+    cameraBitmap: Bitmap,
+    stickers: List<Sticker>,
+    screenWidth: Int,
+    screenHeight: Int
+): Bitmap {
+    val resultBitmap = createBitmap(
+        cameraBitmap.width,
+        cameraBitmap.height,
+        cameraBitmap.config ?: Bitmap.Config.ARGB_8888
+    )
+
+    val canvas = Canvas(resultBitmap)
+
+    // Draw Camera Image as Background
+    canvas.drawBitmap(cameraBitmap, 0f, 0f, null)
+
+    // Get scale ratios between screen and camera bitmap
+    val scaleX = cameraBitmap.width.toFloat() / screenWidth
+    val scaleY = cameraBitmap.height.toFloat() / screenHeight
+
+    // Draw Stickers on Top
+    stickers.forEach { sticker ->
+        val stickerBitmap = BitmapFactory.decodeResource(context.resources, sticker.imageId)
+
+        // Convert sticker size from screen scale to bitmap scale
+        val scaledWidth = (stickerBitmap.width * sticker.scale * scaleX).toInt()
+        val scaledHeight = (stickerBitmap.height * sticker.scale * scaleY).toInt()
+        val scaledSticker = stickerBitmap.scale(scaledWidth, scaledHeight)
+
+        // Convert sticker position from screen coordinates to bitmap coordinates
+        val stickerX = sticker.x * scaleX
+        val stickerY = sticker.y * scaleY
+
+        // Draw sticker on the camera bitmap
+        canvas.drawBitmap(scaledSticker, stickerX, stickerY, null)
+    }
+
+    return resultBitmap
+}
+
 
 @Composable
 private fun LastPhotoPreview(
