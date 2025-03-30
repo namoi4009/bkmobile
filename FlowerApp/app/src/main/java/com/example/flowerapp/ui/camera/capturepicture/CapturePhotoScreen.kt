@@ -93,7 +93,7 @@ private fun CameraContent(
         LifecycleCameraController(context)
     }
 
-    var selectedStickers by remember { mutableStateOf<List<Sticker>>(emptyList()) }
+    var selectedStickers by remember { mutableStateOf(mutableListOf<Sticker>()) }
 
     // State to control the flash effect
     var isFlashing by remember { mutableStateOf(false) }
@@ -166,7 +166,8 @@ private fun CameraContent(
             StickerCanvas(stickers = selectedStickers, modifier = Modifier.fillMaxSize())
 
             ToggleLazyColumnScreen { sticker ->
-                selectedStickers = selectedStickers + sticker
+                selectedStickers = selectedStickers.toMutableList().apply { add(sticker) }
+
             }
 
             // Flash effect overlay
@@ -180,7 +181,6 @@ private fun CameraContent(
                 }
             }
 
-            // Show the last photo preview if we have a photo and the preview is enabled
             if (lastCapturedPhoto != null && showLastPhotoPreview) {
                 LastPhotoPreview(
                     modifier = Modifier.align(Alignment.BottomStart),

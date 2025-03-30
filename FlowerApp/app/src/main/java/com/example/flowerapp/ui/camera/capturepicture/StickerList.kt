@@ -1,6 +1,7 @@
 package com.example.flowerapp.ui.camera.capturepicture
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.MaterialTheme
@@ -23,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
@@ -57,7 +60,7 @@ val stickers = listOf(
 
 @Composable
 fun StickerCanvas(
-    stickers: List<Sticker>,
+    stickers: MutableList<Sticker>,
     modifier: Modifier = Modifier
 ) {
     val density = LocalDensity.current
@@ -65,40 +68,71 @@ fun StickerCanvas(
 
     Box(modifier = modifier.fillMaxSize()) {
         stickers.forEach { sticker ->
-            // Initialize position at the center if not already set
             if (sticker.x == 0f && sticker.y == 0f) {
-                sticker.x = with(density) { (screenSize.first.dp.toPx() / 2) - 50 }  // Adjust for centering
+                sticker.x = with(density) { (screenSize.first.dp.toPx() / 2) - 50 }
                 sticker.y = with(density) { (screenSize.second.dp.toPx() / 2) - 50 }
             }
 
             var position by remember { mutableStateOf(Offset(sticker.x, sticker.y)) }
             var scale by remember { mutableFloatStateOf(sticker.scale) }
+            var isResizing by remember { mutableStateOf(false) }
 
             Box(
                 modifier = Modifier
                     .offset { IntOffset(position.x.toInt(), position.y.toInt()) }
                     .pointerInput(Unit) {
-                        detectTransformGestures { _, pan, zoom, _ ->
-                            position = Offset(position.x + pan.x, position.y + pan.y)
-                            scale = (scale * zoom).coerceIn(0.5f, 3f)
+                        detectTransformGestures { _, pan, _, _ ->
+                            if (!isResizing) {
+                                position = Offset(position.x + pan.x, position.y + pan.y)
+                            }
                         }
                     }
             ) {
-                Image(
-                    painter = painterResource(id = sticker.imageId),
-                    contentDescription = sticker.name,
-                    modifier = Modifier.size((100 * scale).dp)
-                )
+                Box {
+                    Image(
+                        painter = painterResource(id = sticker.imageId),
+                        contentDescription = sticker.name,
+                        modifier = Modifier.size((100 * scale).dp)
+                    )
+
+                    // Delete Button (Top-left)
+                    Button(
+                        onClick = { stickers.remove(sticker) },
+                        modifier = Modifier
+                            .offset((-20).dp, (-20).dp)
+                            .size(24.dp)
+                    ) {
+                        Text("X")
+                    }
+
+                    // Resize Handle (Bottom-right)
+                    Box(
+                        modifier = Modifier
+                            .offset((90 * scale).dp, (90 * scale).dp)
+                            .size(24.dp)
+                            .pointerInput(Unit) {
+                                detectTransformGestures { _, pan, _, _ ->
+                                    isResizing = true
+                                    scale = (scale + pan.x * 0.01f).coerceIn(0.5f, 3f)
+                                }
+                            }
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(24.dp)
+                                .background(Color.Gray, shape = CircleShape)
+                        )
+                    }
+                }
             }
 
-            // Update sticker's position and scale
+            // Update sticker properties
             sticker.x = position.x
             sticker.y = position.y
             sticker.scale = scale
         }
     }
 }
-
 
 
 @Composable
