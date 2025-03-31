@@ -77,7 +77,7 @@ fun MainApp() {
 
                 // route: model3d
                 composable("model3d") {
-                    View3DModelScreen()
+                    View3DModelScreen { navigateBack() }
                 }
             }
         }

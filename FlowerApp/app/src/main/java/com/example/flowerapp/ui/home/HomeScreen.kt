@@ -46,7 +46,7 @@ fun HomeComponent(
             verticalArrangement = Arrangement.SpaceAround
         ) {
             MenuCard(
-                imageId = R.drawable.ic_launcher_background,
+                imageId = R.drawable.view_3d_model,
                 text = stringResource(id = R.string.model_3D),
                 onClick = {
                     openView3DModelScreen()
@@ -54,7 +54,7 @@ fun HomeComponent(
             )
             CommonVSpace()
             MenuCard(
-                imageId = R.drawable.ic_launcher_background,
+                imageId = R.drawable.capture_picture,
                 text = stringResource(id = R.string.capture_picture),
                 onClick = {
                     openCameraScreen()

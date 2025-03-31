@@ -20,6 +20,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardDefaults.cardColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.example.flowerapp.R
@@ -61,10 +63,16 @@ import io.github.sceneview.rememberView
 import kotlinx.coroutines.delay
 
 @Composable
-fun View3DModelScreen() {
+fun View3DModelScreen(
+    onBackPressed: () -> Unit
+) {
     var selectedModel by remember { mutableStateOf(model3DList.first()) } // Default model
 
-    CustomScaffold(bottomBarText = "View 3D Model") {
+    CustomScaffold(
+        bottomBarText = "View 3D Model",
+        showBackButton = true,
+        onBackPressed = onBackPressed
+    ) {
         GLBModelViewer(selectedModel, onModelSelected = { model -> selectedModel = model })
     }
 }
@@ -81,24 +89,43 @@ fun GLBModelViewer(selectedModel: Model3D, onModelSelected: (Model3D) -> Unit) {
     val collisionSystem = rememberCollisionSystem(view)
 
     var showPopup by remember { mutableStateOf(false) }
-    val modelNode = remember {
-        ModelNode(
-            modelInstance = modelLoader.createModelInstance(rawResId = selectedModel.modelResourceId),
-            scaleToUnits = 1.0f
-        )
-    }
-
     var rotationAngle by remember { mutableFloatStateOf(0f) }
-    val initialScale = remember { modelNode.scale }
-    var modelPosition by remember { mutableStateOf(Position(0f, 0f, 0f)) }
     var cameraNode = rememberCameraNode(engine) { position = Position(z = 4.0f) }
     val initialCameraPosition = remember { cameraNode.position }
 
+    var modelPosition by remember { mutableStateOf(Position(0f, 0f, 0f)) }
+
+    // Use rememberNodes to store and update the modelNode
+    val modelNodes = rememberNodes {
+        add(
+            ModelNode(
+                modelInstance = modelLoader.createModelInstance(rawResId = selectedModel.modelResourceId),
+                scaleToUnits = 1.0f
+            ).apply {
+                position = modelPosition
+            }
+        )
+    }
+
+    // Update the model when selectedModel changes
+    LaunchedEffect(selectedModel) {
+        modelNodes.clear() // Remove previous model
+        modelNodes.add(
+            ModelNode(
+                modelInstance = modelLoader.createModelInstance(rawResId = selectedModel.modelResourceId),
+                scaleToUnits = 1.0f
+            ).apply {
+                position = modelPosition
+            }
+        )
+    }
+
+    // Continuous rotation effect
     LaunchedEffect(Unit) {
         while (true) {
             delay(16L) // ~60 FPS
             rotationAngle += 1f
-            modelNode.rotation = Rotation(y = rotationAngle)
+            modelNodes.firstOrNull()?.rotation = Rotation(y = rotationAngle)
         }
     }
 
@@ -120,10 +147,10 @@ fun GLBModelViewer(selectedModel: Model3D, onModelSelected: (Model3D) -> Unit) {
             },
             cameraNode = cameraNode,
             cameraManipulator = rememberCameraManipulator(),
-            childNodes = rememberNodes { add(modelNode) },
+            childNodes = modelNodes,  // Use the dynamic list of nodes
             onGestureListener = rememberOnGestureListener(
-                onDoubleTapEvent = { _, tapedNode ->
-                    if (tapedNode != null) {
+                onDoubleTapEvent = { _, tappedNode ->
+                    if (tappedNode != null) {
                         showPopup = true
                     }
                 }
@@ -131,12 +158,7 @@ fun GLBModelViewer(selectedModel: Model3D, onModelSelected: (Model3D) -> Unit) {
             onTouchEvent = { _, _ -> false }
         )
 
-        // Model Selection LazyRow inside GLBModelViewer
-        ModelLazyRow(
-            onModelSelected = { model ->
-                onModelSelected(model)
-            }
-        )
+        ModelLazyRow(onModelSelected = onModelSelected)
 
         Row(
             modifier = Modifier
@@ -148,7 +170,7 @@ fun GLBModelViewer(selectedModel: Model3D, onModelSelected: (Model3D) -> Unit) {
                 modifier = Modifier.padding(end = 16.dp),
                 onMove = { dx, dy ->
                     modelPosition = Position(modelPosition.x + dx * 0.1f, modelPosition.y - dy * 0.1f, modelPosition.z)
-                    modelNode.position = modelPosition
+                    modelNodes.firstOrNull()?.position = modelPosition
                 }
             )
 
@@ -156,8 +178,7 @@ fun GLBModelViewer(selectedModel: Model3D, onModelSelected: (Model3D) -> Unit) {
                 iconId = R.drawable.reset,
                 textId = R.string.reset,
                 onClick = {
-                    modelNode.position = Position(0f, 0f, 0f)
-                    modelNode.scale = initialScale
+                    modelNodes.firstOrNull()?.position = Position(0f, 0f, 0f)
                     cameraNode.position = initialCameraPosition
                 },
                 primaryButton = false
@@ -226,14 +247,17 @@ fun ModelInfoPopup(model: Model3D, onDismiss: () -> Unit) {
         Card(
             modifier = Modifier.padding(24.dp),
             shape = MaterialTheme.shapes.medium,
-            elevation = CardDefaults.cardElevation(8.dp)
+            elevation = CardDefaults.cardElevation(8.dp),
+            colors = cardColors(containerColor = MaterialTheme.colorScheme.background)
         ) {
             Column(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = model.name, style = MaterialTheme.typography.titleLarge)
+                Text(text = model.name, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.secondary, fontWeight = FontWeight.Bold)
+
                 Spacer(modifier = Modifier.height(8.dp))
+
                 Text(text = model.description, style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(onClick = onDismiss) { Text("Close") }
