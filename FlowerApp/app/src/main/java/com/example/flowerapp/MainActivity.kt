@@ -21,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.flowerapp.ui.camera.CameraScreen
 import com.example.flowerapp.ui.home.HomeScreen
 import com.example.flowerapp.ui.login.LoginScreen
+import com.example.flowerapp.ui.model3d.View3DModelScreen
 import com.example.flowerapp.ui.theme.FlowerAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -59,9 +60,14 @@ fun MainApp() {
 
                 // route: home
                 composable("home") {
-                    HomeScreen(openCameraScreen = {
+                    HomeScreen(
+                        openCameraScreen = {
                         navController.navigate("camera")
-                    })
+                    },
+                        openView3DModelScreen = {
+                            navController.navigate("model3d")
+                        }
+                    )
                 }
 
                 // route: camera
@@ -69,6 +75,10 @@ fun MainApp() {
                     CameraScreen { navigateBack() }
                 }
 
+                // route: model3d
+                composable("model3d") {
+                    View3DModelScreen()
+                }
             }
         }
     }

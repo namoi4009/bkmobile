@@ -22,14 +22,21 @@ import com.example.flowerapp.R
 import com.example.flowerapp.ui.theme.CommonVSpace
 
 @Composable
-fun HomeScreen(openCameraScreen: () -> Unit) {
+fun HomeScreen(
+    openCameraScreen: () -> Unit,
+    openView3DModelScreen: () -> Unit
+) {
     CustomScaffold(bottomBarText = "Home") {
-        innerPadding -> HomeComponent(innerPadding, openCameraScreen)
+        innerPadding -> HomeComponent(innerPadding, openCameraScreen, openView3DModelScreen)
     }
 }
 
 @Composable
-fun HomeComponent(innerPadding: PaddingValues, openCameraScreen: () -> Unit) {
+fun HomeComponent(
+    innerPadding: PaddingValues,
+    openCameraScreen: () -> Unit,
+    openView3DModelScreen: () -> Unit
+) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -41,7 +48,9 @@ fun HomeComponent(innerPadding: PaddingValues, openCameraScreen: () -> Unit) {
             MenuCard(
                 imageId = R.drawable.ic_launcher_background,
                 text = stringResource(id = R.string.model_3D),
-                onClick = {}
+                onClick = {
+                    openView3DModelScreen()
+                }
             )
             CommonVSpace()
             MenuCard(

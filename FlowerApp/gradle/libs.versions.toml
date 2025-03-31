@@ -1,6 +1,7 @@
 [versions]
 agp = "8.9.0"
 cameraCamera2 = "1.5.0-alpha06"
+filamentAndroidVersion = "1.57.1"
 koinAndroid = "4.0.3"
 koinAnnotationsVersion = "2.0.0"
 koinCoreVersion = "4.0.3"
@@ -15,6 +16,7 @@ activityCompose = "1.10.1"
 composeBom = "2024.09.00"
 navVersion = "2.8.9"
 accompanistVersion = "0.37.2"
+sceneviewVersion = "2.2.1"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistVersion" }
@@ -28,6 +30,8 @@ androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "lifecycleRuntimeKtx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navVersion" }
+filament-android = { module = "com.google.android.filament:filament-android", version.ref = "filamentAndroidVersion" }
+filament-utils-android = { module = "com.google.android.filament:filament-utils-android", version.ref = "filamentAndroidVersion" }
 insert-koin-koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -46,6 +50,7 @@ koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", versi
 koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koinAnnotationsVersion" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCoreVersion" }
 koin-ksp-compiler = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koinKspCompilerVersion" }
+sceneview = { module = "io.github.sceneview:sceneview", version.ref = "sceneviewVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

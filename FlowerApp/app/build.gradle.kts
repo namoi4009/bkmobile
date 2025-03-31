@@ -72,6 +72,10 @@ dependencies {
     implementation(libs.koin.annotations)
     ksp(libs.koin.ksp.compiler)
 
+    implementation(libs.sceneview)
+    implementation(libs.filament.android)
+    implementation(libs.filament.utils.android)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
