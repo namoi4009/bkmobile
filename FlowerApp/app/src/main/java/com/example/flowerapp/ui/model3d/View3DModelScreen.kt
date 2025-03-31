@@ -4,6 +4,7 @@ import android.view.MotionEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -56,9 +58,6 @@ import io.github.sceneview.rememberRenderer
 import io.github.sceneview.rememberScene
 import io.github.sceneview.rememberView
 import kotlinx.coroutines.delay
-import kotlin.math.PI
-import kotlin.math.cos
-import kotlin.math.sin
 
 @Composable
 fun View3DModelScreen() {
@@ -261,50 +260,59 @@ fun Joystick(
 
 @Composable
 fun ModelLazyRow() {
+    val model3DList = listOf(
+        Model3D(
+            name = "Rose",
+            description = "A beautiful red rose preserved in a transparent glass dome, symbolizing love, beauty, and eternity.",
+            modelResourceId = R.raw.rose
+        ),
+        Model3D(
+            name = "Sunflower",
+            description = "A bright and cheerful sunflower with golden petals and a sturdy green stem, capturing the essence of warmth and vitality.",
+            modelResourceId = R.raw.sunflower
+        ),
+        Model3D(
+            name = "Tulip",
+            description = "A graceful pair of purple tulips standing together in elegant harmony, symbolizing elegance and admiration.",
+            modelResourceId = R.raw.tulip
+        ),
+        Model3D(
+            name = "Cherry blossom",
+            description = "An lovely cherry blossom branch adorned with soft pink flowers, capturing the beauty of spring.",
+            modelResourceId = R.raw.cherry_blossom_branch
+        ),
+        Model3D(
+            name = "Lily",
+            description = "A dreamy bunch of pink lilies, with some in full bloom and others still in bud, radiating natural beauty.",
+            modelResourceId = R.raw.lilies
+        ),
+        Model3D(
+            name = "Lotus",
+            description = "A serene pink lotus in full bloom, with gracefully layered petals radiating purity and tranquility.",
+            modelResourceId = R.raw.lotus
+        ),
+        Model3D(
+            name = "Orchid",
+            description = "A graceful branch of purple orchids with elegant, velvety petals cascading in a delicate arc.",
+            modelResourceId = R.raw.orchid
+        ),
+    )
+
     LazyRow (
-        userScrollEnabled = true
+        userScrollEnabled = true,
+        modifier = Modifier.padding(12.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        item {
-            Text(
-                text = "Item 1",
-                modifier = Modifier.padding(16.dp)
-            )
-        }
-        item {
-            Text(
-                text = "Item 2",
-                modifier = Modifier.padding(16.dp)
-            )
-        }
-        item {
-            Text(
-                text = "Item 3",
-                modifier = Modifier.padding(16.dp)
-            )
-        }
-        item {
-            Text(
-                text = "Item 3",
-                modifier = Modifier.padding(16.dp)
-            )
-        }
-        item {
-            Text(
-                text = "Item 3",
-                modifier = Modifier.padding(16.dp)
-            )
-        }
-        item {
-            Text(
-                text = "Item 3",
-                modifier = Modifier.padding(16.dp)
-            )
-        }
-        item {
-            Text(
-                text = "Item 3",
-                modifier = Modifier.padding(16.dp)
-            )
+        items(model3DList.size) { index ->
+            Button(
+                onClick = {  },
+                colors = buttonColors(
+                    containerColor = MaterialTheme.colorScheme.onSecondary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                )
+            ) {
+                Text(model3DList[index].name)
+            }
         }
     }
 }
