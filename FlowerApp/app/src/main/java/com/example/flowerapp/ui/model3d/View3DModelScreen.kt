@@ -31,6 +31,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -61,15 +62,15 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun View3DModelScreen() {
-    CustomScaffold(
-        bottomBarText = "View 3D Model"
-    ) {
-        GLBModelViewer(modelResourceId = R.raw.rose)
+    var selectedModel by remember { mutableStateOf(model3DList.first()) } // Default model
+
+    CustomScaffold(bottomBarText = "View 3D Model") {
+        GLBModelViewer(selectedModel, onModelSelected = { model -> selectedModel = model })
     }
 }
 
 @Composable
-fun GLBModelViewer(modelResourceId: Int) {
+fun GLBModelViewer(selectedModel: Model3D, onModelSelected: (Model3D) -> Unit) {
     val engine = rememberEngine()
     val view = rememberView(engine)
     val renderer = rememberRenderer(engine)
@@ -82,9 +83,7 @@ fun GLBModelViewer(modelResourceId: Int) {
     var showPopup by remember { mutableStateOf(false) }
     val modelNode = remember {
         ModelNode(
-            modelInstance = modelLoader.createModelInstance(
-                rawResId = modelResourceId
-            ),
+            modelInstance = modelLoader.createModelInstance(rawResId = selectedModel.modelResourceId),
             scaleToUnits = 1.0f
         )
     }
@@ -92,17 +91,13 @@ fun GLBModelViewer(modelResourceId: Int) {
     var rotationAngle by remember { mutableFloatStateOf(0f) }
     val initialScale = remember { modelNode.scale }
     var modelPosition by remember { mutableStateOf(Position(0f, 0f, 0f)) }
-    var cameraNode = rememberCameraNode(engine) {
-        position = Position(z = 4.0f)
-    }
+    var cameraNode = rememberCameraNode(engine) { position = Position(z = 4.0f) }
     val initialCameraPosition = remember { cameraNode.position }
 
-    // Rotate the model on its own Y-axis
     LaunchedEffect(Unit) {
         while (true) {
             delay(16L) // ~60 FPS
-            rotationAngle += 1f // Adjust speed of rotation (1f = slower, 5f = faster)
-
+            rotationAngle += 1f
             modelNode.rotation = Rotation(y = rotationAngle)
         }
     }
@@ -119,19 +114,13 @@ fun GLBModelViewer(modelResourceId: Int) {
             environmentLoader = environmentLoader,
             collisionSystem = collisionSystem,
             isOpaque = true,
-            mainLightNode = rememberMainLightNode(engine) {
-                intensity = 100_000.0f
-            },
+            mainLightNode = rememberMainLightNode(engine) { intensity = 100_000.0f },
             environment = rememberEnvironment(environmentLoader) {
-                environmentLoader.createHDREnvironment(
-                    rawResId = R.raw.neutral
-                )!!
+                environmentLoader.createHDREnvironment(rawResId = R.raw.neutral)!!
             },
             cameraNode = cameraNode,
             cameraManipulator = rememberCameraManipulator(),
-            childNodes = rememberNodes {
-                add(modelNode)
-            },
+            childNodes = rememberNodes { add(modelNode) },
             onGestureListener = rememberOnGestureListener(
                 onDoubleTapEvent = { _, tapedNode ->
                     if (tapedNode != null) {
@@ -140,6 +129,13 @@ fun GLBModelViewer(modelResourceId: Int) {
                 }
             ),
             onTouchEvent = { _, _ -> false }
+        )
+
+        // Model Selection LazyRow inside GLBModelViewer
+        ModelLazyRow(
+            onModelSelected = { model ->
+                onModelSelected(model)
+            }
         )
 
         Row(
@@ -169,46 +165,7 @@ fun GLBModelViewer(modelResourceId: Int) {
         }
 
         if (showPopup) {
-            ModelInfoPopup(onDismiss = { showPopup = false })
-        }
-
-        ModelLazyRow()
-    }
-}
-
-@Composable
-fun ModelInfoPopup(onDismiss: () -> Unit) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .clickable(onClick = onDismiss), // Dismiss when tapped outside
-        contentAlignment = Alignment.Center // Center the popup above the model
-    ) {
-        Card(
-            modifier = Modifier
-                .padding(24.dp)
-                .align(Alignment.Center), // Aligns the pop-up above the 3D model
-            shape = MaterialTheme.shapes.medium,
-            elevation = CardDefaults.cardElevation(8.dp)
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "Rose in Glass",
-                    style = MaterialTheme.typography.titleLarge
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "A beautiful red rose preserved in a glass dome, symbolizing love and eternity.",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Button(onClick = onDismiss) {
-                    Text("Close")
-                }
-            }
+            ModelInfoPopup(selectedModel, onDismiss = { showPopup = false })
         }
     }
 }
@@ -259,53 +216,43 @@ fun Joystick(
 }
 
 @Composable
-fun ModelLazyRow() {
-    val model3DList = listOf(
-        Model3D(
-            name = "Rose",
-            description = "A beautiful red rose preserved in a transparent glass dome, symbolizing love, beauty, and eternity.",
-            modelResourceId = R.raw.rose
-        ),
-        Model3D(
-            name = "Sunflower",
-            description = "A bright and cheerful sunflower with golden petals and a sturdy green stem, capturing the essence of warmth and vitality.",
-            modelResourceId = R.raw.sunflower
-        ),
-        Model3D(
-            name = "Tulip",
-            description = "A graceful pair of purple tulips standing together in elegant harmony, symbolizing elegance and admiration.",
-            modelResourceId = R.raw.tulip
-        ),
-        Model3D(
-            name = "Cherry blossom",
-            description = "An lovely cherry blossom branch adorned with soft pink flowers, capturing the beauty of spring.",
-            modelResourceId = R.raw.cherry_blossom_branch
-        ),
-        Model3D(
-            name = "Lily",
-            description = "A dreamy bunch of pink lilies, with some in full bloom and others still in bud, radiating natural beauty.",
-            modelResourceId = R.raw.lilies
-        ),
-        Model3D(
-            name = "Lotus",
-            description = "A serene pink lotus in full bloom, with gracefully layered petals radiating purity and tranquility.",
-            modelResourceId = R.raw.lotus
-        ),
-        Model3D(
-            name = "Orchid",
-            description = "A graceful branch of purple orchids with elegant, velvety petals cascading in a delicate arc.",
-            modelResourceId = R.raw.orchid
-        ),
-    )
+fun ModelInfoPopup(model: Model3D, onDismiss: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable(onClick = onDismiss),
+        contentAlignment = Alignment.Center
+    ) {
+        Card(
+            modifier = Modifier.padding(24.dp),
+            shape = MaterialTheme.shapes.medium,
+            elevation = CardDefaults.cardElevation(8.dp)
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(text = model.name, style = MaterialTheme.typography.titleLarge)
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(text = model.description, style = MaterialTheme.typography.bodyMedium)
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(onClick = onDismiss) { Text("Close") }
+            }
+        }
+    }
+}
 
-    LazyRow (
+@Composable
+fun ModelLazyRow(onModelSelected: (Model3D) -> Unit) {
+    LazyRow(
         userScrollEnabled = true,
-        modifier = Modifier.padding(12.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        modifier = Modifier
+            .padding(12.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         items(model3DList.size) { index ->
             Button(
-                onClick = {  },
+                onClick = { onModelSelected(model3DList[index]) },
                 colors = buttonColors(
                     containerColor = MaterialTheme.colorScheme.onSecondary,
                     contentColor = MaterialTheme.colorScheme.onPrimary
@@ -316,3 +263,13 @@ fun ModelLazyRow() {
         }
     }
 }
+
+val model3DList = listOf(
+    Model3D("Rose", "A beautiful red rose preserved in a transparent glass dome, symbolizing love, beauty, and eternity.", R.raw.rose),
+    Model3D("Sunflower", "A bright and cheerful sunflower with golden petals and a sturdy green stem, capturing the essence of warmth and vitality.", R.raw.sunflower),
+    Model3D("Tulip", "A graceful pair of purple tulips standing together in elegant harmony, symbolizing elegance and admiration.", R.raw.tulip),
+    Model3D("Cherry blossom", "A lovely cherry blossom branch adorned with soft pink flowers, capturing the beauty of spring.", R.raw.cherry_blossom_branch),
+    Model3D("Lily", "A dreamy bunch of pink lilies, with some in full bloom and others still in bud, radiating natural beauty.", R.raw.lilies),
+    Model3D("Lotus", "A serene pink lotus in full bloom, with gracefully layered petals radiating purity and tranquility.", R.raw.lotus),
+    Model3D("Orchid", "A graceful branch of purple orchids with elegant, velvety petals cascading in a delicate arc.", R.raw.orchid)
+)
