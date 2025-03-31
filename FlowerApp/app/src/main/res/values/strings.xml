@@ -5,4 +5,5 @@
     <string name="capture_picture">Capture Picture</string>
     <string name="grant_permission">Grant permission</string>
     <string name="grant_camera_permission_message">Please grant the camera permission to capture picture.</string>
+    <string name="reset">Reset</string>
 </resources>
