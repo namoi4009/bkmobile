@@ -43,7 +43,7 @@ fun HomeComponent(
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceAround
+//            verticalArrangement = Arrangement.SpaceAround
         ) {
             MenuCard(
                 imageId = R.drawable.view_3d_model,
@@ -52,7 +52,7 @@ fun HomeComponent(
                     openView3DModelScreen()
                 }
             )
-            CommonVSpace()
+//            CommonVSpace()
             MenuCard(
                 imageId = R.drawable.capture_picture,
                 text = stringResource(id = R.string.capture_picture),
