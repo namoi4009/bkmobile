@@ -1,14 +1,40 @@
 package com.example.flowerapp.ui.model3d
 
 import android.view.MotionEvent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
 import com.example.flowerapp.R
 import io.github.sceneview.Scene
 import io.github.sceneview.collision.HitResult
 import io.github.sceneview.math.Position
+import io.github.sceneview.math.Rotation
 import io.github.sceneview.node.ModelNode
 import io.github.sceneview.rememberCameraManipulator
 import io.github.sceneview.rememberCameraNode
@@ -24,6 +50,10 @@ import io.github.sceneview.rememberOnGestureListener
 import io.github.sceneview.rememberRenderer
 import io.github.sceneview.rememberScene
 import io.github.sceneview.rememberView
+import kotlinx.coroutines.delay
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.sin
 
 @Composable
 fun View3DModelScreen() {
@@ -31,9 +61,7 @@ fun View3DModelScreen() {
 }
 
 @Composable
-fun GLBModelViewer(
-    modelResourceId: Int,
-) {
+fun GLBModelViewer(modelResourceId: Int) {
     val engine = rememberEngine()
     val view = rememberView(engine)
     val renderer = rememberRenderer(engine)
@@ -43,53 +71,159 @@ fun GLBModelViewer(
     val environmentLoader = rememberEnvironmentLoader(engine)
     val collisionSystem = rememberCollisionSystem(view)
 
-    Scene(
-        modifier = Modifier.fillMaxSize(),
-        engine = engine,
-        view = view,
-        renderer = renderer,
-        scene = scene,
-        modelLoader = modelLoader,
-        materialLoader = materialLoader,
-        environmentLoader = environmentLoader,
-        collisionSystem = collisionSystem,
-        // Controls whether the render target (SurfaceView) is opaque or not.
-        isOpaque = true,
-        // Always add a direct light source since it is required for shadowing.
-        // We highly recommend adding an [IndirectLight] as well.
-        mainLightNode = rememberMainLightNode(engine) {
-            intensity = 100_000.0f
-        },
-        environment = rememberEnvironment(environmentLoader) {
-            environmentLoader.createHDREnvironment(
-                rawResId = R.raw.neutral
-            )!!
-        },
-        cameraNode = rememberCameraNode(engine) {
-            position = Position(z = 4.0f)
-        },
-        cameraManipulator = rememberCameraManipulator(),
-        // Scene nodes
-        childNodes = rememberNodes {
-            // Add a glTF model
-            add(
-                ModelNode(
-                    // Load it from a binary .glb in the asset files
-                    modelInstance = modelLoader.createModelInstance(
-                        rawResId = modelResourceId
-                    ),
-                    scaleToUnits = 1.0f
+    var showPopup by remember { mutableStateOf(false) }
+    val modelNode = remember {
+        ModelNode(
+            modelInstance = modelLoader.createModelInstance(
+                rawResId = modelResourceId
+            ),
+            scaleToUnits = 1.0f
+        )
+    }
+
+    var rotationAngle by remember { mutableFloatStateOf(0f) }
+    var modelPosition by remember { mutableStateOf(Position(0f, 0f, 0f)) }
+
+    // Rotate the model on its own Y-axis
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(16L) // ~60 FPS
+            rotationAngle += 1f // Adjust speed of rotation (1f = slower, 5f = faster)
+
+            modelNode.rotation = Rotation(y = rotationAngle)
+        }
+    }
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        Scene(
+            modifier = Modifier.fillMaxSize(),
+            engine = engine,
+            view = view,
+            renderer = renderer,
+            scene = scene,
+            modelLoader = modelLoader,
+            materialLoader = materialLoader,
+            environmentLoader = environmentLoader,
+            collisionSystem = collisionSystem,
+            isOpaque = true,
+            mainLightNode = rememberMainLightNode(engine) {
+                intensity = 100_000.0f
+            },
+            environment = rememberEnvironment(environmentLoader) {
+                environmentLoader.createHDREnvironment(
+                    rawResId = R.raw.neutral
+                )!!
+            },
+            cameraNode = rememberCameraNode(engine) {
+                position = Position(z = 4.0f)
+            },
+            cameraManipulator = rememberCameraManipulator(),
+            childNodes = rememberNodes {
+                add(modelNode)
+            },
+            onGestureListener = rememberOnGestureListener(
+                onDoubleTapEvent = { _, tapedNode ->
+                    if (tapedNode != null) {
+                        showPopup = true
+                    }
+                }
+            ),
+            onTouchEvent = { _, _ -> false }
+        )
+
+        Joystick(
+            modifier = Modifier.align(Alignment.BottomStart).padding(32.dp),
+            onMove = { dx, dy ->
+                modelPosition = Position(modelPosition.x + dx * 0.1f, modelPosition.y - dy * 0.1f, modelPosition.z)
+                modelNode.position = modelPosition
+            }
+        )
+
+
+        if (showPopup) {
+            ModelInfoPopup(onDismiss = { showPopup = false })
+        }
+    }
+}
+
+@Composable
+fun ModelInfoPopup(onDismiss: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable(onClick = onDismiss), // Dismiss when tapped outside
+        contentAlignment = Alignment.Center // Center the popup above the model
+    ) {
+        Card(
+            modifier = Modifier
+                .padding(24.dp)
+                .align(Alignment.Center), // Aligns the pop-up above the 3D model
+            shape = MaterialTheme.shapes.medium,
+            elevation = CardDefaults.cardElevation(8.dp)
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Rose in Glass",
+                    style = MaterialTheme.typography.titleLarge
                 )
-            )
-        },
-        onGestureListener = rememberOnGestureListener(
-            onDoubleTapEvent = { event, tapedNode ->
-                tapedNode?.let { it.scale *= 2.0f }
-            }),
-        // Receive basics on touch event on the view
-        onTouchEvent = { event: MotionEvent, hitResult: HitResult? ->
-            hitResult?.let { println("World tapped : ${it.worldPosition}") }
-            false
-        },
-    )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "A beautiful red rose preserved in a glass dome, symbolizing love and eternity.",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(onClick = onDismiss) {
+                    Text("Close")
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun Joystick(
+    modifier: Modifier = Modifier,
+    onMove: (Float, Float) -> Unit
+) {
+    val joystickRadius = 50f // Outer circle radius
+    val thumbRadius = 20f // Inner thumb size
+    var offsetX by remember { mutableFloatStateOf(0f) }
+    var offsetY by remember { mutableFloatStateOf(0f) }
+
+    Box(
+        modifier = modifier
+            .size(joystickRadius.dp * 2)
+            .background(color = MaterialTheme.colorScheme.primary, shape = CircleShape)
+            .pointerInput(Unit) {
+                detectDragGestures { change, dragAmount ->
+                    change.consume()
+                    offsetX = (offsetX + dragAmount.x).coerceIn(-joystickRadius, joystickRadius)
+                    offsetY = (offsetY + dragAmount.y).coerceIn(-joystickRadius, joystickRadius)
+                    onMove(offsetX / joystickRadius, offsetY / joystickRadius)
+                }
+            },
+        contentAlignment = Alignment.Center
+    ) {
+        Box(
+            modifier = Modifier
+                .size(thumbRadius.dp * 2)
+                .offset { IntOffset(offsetX.toInt(), offsetY.toInt()) }
+                .background(MaterialTheme.colorScheme.onPrimary, shape = CircleShape)
+                .pointerInput(Unit) {
+                    detectDragGestures(onDragEnd = {
+                        offsetX = 0f
+                        offsetY = 0f
+                        onMove(0f, 0f) // Reset movement
+                    }) { change, dragAmount ->
+                        change.consume()
+                        offsetX = (offsetX + dragAmount.x).coerceIn(-joystickRadius, joystickRadius)
+                        offsetY = (offsetY + dragAmount.y).coerceIn(-joystickRadius, joystickRadius)
+                        onMove(offsetX / joystickRadius, offsetY / joystickRadius)
+                    }
+                }
+        )
+    }
 }
