@@ -3,12 +3,40 @@
   "WorkspaceRootPath": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|c:\\users\\tango\\documents\\bkmobile\\unityapp\\assets\\scripts\\scenechanger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\scenechanger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|c:\\users\\tango\\documents\\bkmobile\\unityapp\\assets\\scripts\\loginmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\loginmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|c:\\users\\tango\\documents\\bkmobile\\unityapp\\assets\\scripts\\cameramanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\cameramanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\assets\\scripts\\stickerdeletebutton.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\stickerdeletebutton.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\assets\\scripts\\stickerintaracable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\stickerintaracable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\assets\\scripts\\captureimage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\captureimage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\assets\\scripts\\stickernavbarmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\stickernavbarmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\assets\\scripts\\navbartoggle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\navbartoggle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\assets\\scripts\\stickerspawner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\stickerspawner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\assets\\scripts\\camerapermission.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\camerapermission.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -27,28 +55,112 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "SceneChanger.cs",
-              "DocumentMoniker": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\SceneChanger.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\SceneChanger.cs",
-              "ToolTip": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\SceneChanger.cs",
-              "RelativeToolTip": "Assets\\Scripts\\SceneChanger.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAAwBcAAAA3AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-08T22:00:57.36Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
               "Title": "LoginManager.cs",
               "DocumentMoniker": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\LoginManager.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\LoginManager.cs",
               "ToolTip": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\LoginManager.cs",
               "RelativeToolTip": "Assets\\Scripts\\LoginManager.cs",
-              "ViewState": "AgIAABwAAAAAAAAAAAAQwB0AAAAvAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-08T20:41:43.417Z",
+              "WhenOpened": "2025-04-09T08:14:28.128Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "StickerDeleteButton.cs",
+              "DocumentMoniker": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\StickerDeleteButton.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\StickerDeleteButton.cs",
+              "ToolTip": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\StickerDeleteButton.cs",
+              "RelativeToolTip": "Assets\\Scripts\\StickerDeleteButton.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-09T05:01:30.738Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "StickerNavBarManager.cs",
+              "DocumentMoniker": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\StickerNavBarManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\StickerNavBarManager.cs",
+              "ToolTip": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\StickerNavBarManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\StickerNavBarManager.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAgwC4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-09T04:19:21.003Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "NavBarToggle.cs",
+              "DocumentMoniker": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\NavBarToggle.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\NavBarToggle.cs",
+              "ToolTip": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\NavBarToggle.cs",
+              "RelativeToolTip": "Assets\\Scripts\\NavBarToggle.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-09T04:14:57.129Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "StickerIntaracable.cs",
+              "DocumentMoniker": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\StickerIntaracable.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\StickerIntaracable.cs",
+              "ToolTip": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\StickerIntaracable.cs",
+              "RelativeToolTip": "Assets\\Scripts\\StickerIntaracable.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAYwBkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-09T04:01:55.025Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "StickerSpawner.cs",
+              "DocumentMoniker": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\StickerSpawner.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\StickerSpawner.cs",
+              "ToolTip": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\StickerSpawner.cs",
+              "RelativeToolTip": "Assets\\Scripts\\StickerSpawner.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-09T04:00:03.632Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CaptureImage.cs",
+              "DocumentMoniker": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\CaptureImage.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\CaptureImage.cs",
+              "ToolTip": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\CaptureImage.cs",
+              "RelativeToolTip": "Assets\\Scripts\\CaptureImage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-09T03:58:34.495Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CameraManager.cs",
+              "DocumentMoniker": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\CameraManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\CameraManager.cs",
+              "ToolTip": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\CameraManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\CameraManager.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAwB8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-09T03:57:07.011Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "CameraPermission.cs",
+              "DocumentMoniker": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\CameraPermission.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\CameraPermission.cs",
+              "ToolTip": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\CameraPermission.cs",
+              "RelativeToolTip": "Assets\\Scripts\\CameraPermission.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAYwCAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-09T03:54:54.435Z"
             }
           ]
         }
