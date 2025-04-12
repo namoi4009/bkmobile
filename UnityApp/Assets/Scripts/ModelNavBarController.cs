@@ -8,20 +8,8 @@ public class ModelNavBarController : MonoBehaviour
     public GameObject buttonPrefab;
     public Transform contentHolder;
 
-    string[] models = { "cherry_blossom_branch.glb",
-                        "lilies.glb",
-                        "lotus.glb",
-                        "orchid.glb",
-                        "rose.glb",
-                        "sunflower.glb",
-                        "tulip.glb" };
-    string[] modelDisplayNames = {  "Cherry",
-                                    "Lilies",
-                                    "Lotus",
-                                    "Orchid",
-                                    "Rose",
-                                    "Sunflower",
-                                    "Tulip" };
+    string[] models = { "cherry_blossom_branch.glb", "lilies.glb", "lotus.glb", "orchid.glb", "rose.glb", "sunflower.glb", "tulip.glb" };
+    string[] modelDisplayNames = {  "Cherry", "Lilies", "Lotus", "Orchid", "Rose", "Sunflower", "Tulip" };
     void Start()
     {
         for (int i = 0; i < models.Length; i++)
