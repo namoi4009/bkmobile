@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.testing"
+    namespace = "com.example.ghibliwork"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.testing"
+        applicationId = "com.example.ghibliwork"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

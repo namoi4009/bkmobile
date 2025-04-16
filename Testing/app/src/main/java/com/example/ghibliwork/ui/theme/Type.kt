@@ -1,4 +1,4 @@
-package com.example.testing.ui.theme
+package com.example.ghibliwork.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

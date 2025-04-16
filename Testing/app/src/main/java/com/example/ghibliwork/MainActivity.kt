@@ -1,5 +1,6 @@
-package com.example.testing
+package com.example.ghibliwork
 
+import android.app.DownloadManager
 import android.os.Bundle
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -9,15 +10,15 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.testing.ui.theme.TestingTheme
-import com.example.testing.ui.webview.WebViewViewModel
+import com.example.ghibliwork.ui.webview.WebViewViewModel
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.systemBars
@@ -26,15 +27,14 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
+import com.example.ghibliwork.ui.theme.GhibliworkTheme
 
 class MainActivity : ComponentActivity() {
 
@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            TestingTheme {
+            GhibliworkTheme {
                 val viewModel: WebViewViewModel = viewModel()
                 var canGoBack by remember { mutableStateOf(false) }
 
@@ -128,6 +128,34 @@ fun WebViewScreen(
                 settings.allowContentAccess = true
                 settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
                 setLayerType(WebView.LAYER_TYPE_HARDWARE, null)
+
+                setOnLongClickListener {
+                    val result = hitTestResult
+                    if (result.type == WebView.HitTestResult.IMAGE_TYPE ||
+                        result.type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE
+                    ) {
+                        val imageUrl = result.extra
+                        imageUrl?.let {
+                            Toast.makeText(context, "Image found! Downloading...", Toast.LENGTH_SHORT).show()
+
+                            // Use DownloadManager to download the image
+                            val request = DownloadManager.Request(it.toUri()).apply {
+                                setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                                setDestinationInExternalPublicDir(
+                                    android.os.Environment.DIRECTORY_DOWNLOADS,
+                                    "ghibli_image_${System.currentTimeMillis()}.jpg"
+                                )
+                                setTitle("Downloading image...")
+                                setDescription("Download complete. Tap to view in Gallery.")
+                            }
+                            val dm = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+                            dm.enqueue(request)
+                        }
+                        true
+                    } else {
+                        false
+                    }
+                }
 
                 if (viewModel.webViewBundle == null) {
                     loadUrl(url)

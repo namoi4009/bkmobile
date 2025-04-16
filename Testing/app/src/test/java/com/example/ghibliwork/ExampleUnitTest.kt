@@ -1,4 +1,4 @@
-package com.example.testing
+package com.example.ghibliwork
 
 import org.junit.Test
 

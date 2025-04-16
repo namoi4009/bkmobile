@@ -1,4 +1,4 @@
-package com.example.testing.ui.webview
+package com.example.ghibliwork.ui.webview
 
 import android.os.Bundle
 import androidx.lifecycle.ViewModel
