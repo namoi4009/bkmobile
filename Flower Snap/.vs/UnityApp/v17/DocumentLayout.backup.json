@@ -1,0 +1,153 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\assets\\scripts\\stickermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\stickermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\assets\\scripts\\cameraswitcher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\cameraswitcher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\assets\\scripts\\capturepicturecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\capturepicturecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\assets\\scripts\\navbartoggle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\navbartoggle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\assets\\scripts\\screencapturecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\screencapturecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\assets\\scripts\\stickercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\stickercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\assets\\scripts\\camerapermissionhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\camerapermissionhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\assets\\scripts\\navbarcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B64691E4-BF4F-D156-A912-28D4B0CF91A6}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\navbarcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "StickerManager.cs",
+              "DocumentMoniker": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\StickerManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\StickerManager.cs",
+              "ToolTip": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\StickerManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\StickerManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-14T17:03:36.395Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "StickerController.cs",
+              "DocumentMoniker": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\StickerController.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\StickerController.cs",
+              "ToolTip": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\StickerController.cs",
+              "RelativeToolTip": "Assets\\Scripts\\StickerController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-14T11:36:48.269Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ScreenCaptureController.cs",
+              "DocumentMoniker": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\ScreenCaptureController.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\ScreenCaptureController.cs",
+              "ToolTip": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\ScreenCaptureController.cs",
+              "RelativeToolTip": "Assets\\Scripts\\ScreenCaptureController.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAgwEIAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-14T12:17:16.92Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "NavBarToggle.cs",
+              "DocumentMoniker": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\NavBarToggle.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\NavBarToggle.cs",
+              "ToolTip": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\NavBarToggle.cs",
+              "RelativeToolTip": "Assets\\Scripts\\NavBarToggle.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-14T12:12:12.534Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CapturePictureController.cs",
+              "DocumentMoniker": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\CapturePictureController.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\CapturePictureController.cs",
+              "ToolTip": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\CapturePictureController.cs",
+              "RelativeToolTip": "Assets\\Scripts\\CapturePictureController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-14T11:13:02.76Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CameraSwitcher.cs",
+              "DocumentMoniker": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\CameraSwitcher.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\CameraSwitcher.cs",
+              "ToolTip": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\CameraSwitcher.cs",
+              "RelativeToolTip": "Assets\\Scripts\\CameraSwitcher.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAYwCsAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-14T11:12:02.084Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "NavBarController.cs",
+              "DocumentMoniker": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\NavBarController.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\NavBarController.cs",
+              "ToolTip": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\NavBarController.cs",
+              "RelativeToolTip": "Assets\\Scripts\\NavBarController.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAxwAsAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-14T11:10:34.915Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CameraPermissionHandler.cs",
+              "DocumentMoniker": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\CameraPermissionHandler.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\CameraPermissionHandler.cs",
+              "ToolTip": "C:\\Users\\tango\\Documents\\bkmobile\\UnityApp\\Assets\\Scripts\\CameraPermissionHandler.cs",
+              "RelativeToolTip": "Assets\\Scripts\\CameraPermissionHandler.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAAQwE0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-14T11:08:46.154Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
